@@ -29,7 +29,7 @@ const validateCred = array =>{
   
   let lastIndex = array.length - 1;
   let copiedCreditCard = array.slice();
-  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+  let reducer = (accumulator, currentValue) => accumulator + currentValue;
   let sum = 0;
   for(i= lastIndex -1 ; i>=0; i -= 2){
     copiedCreditCard[i] = copiedCreditCard[i] *2;
@@ -59,7 +59,7 @@ const findInvalidCards = nestedArray => {
     }
   }
   return invalidCards;
-}
+};
 
 const idInvalidCardCompanies = nestedArray =>{
   let invalidAmex = 0;
@@ -94,13 +94,78 @@ const idInvalidCardCompanies = nestedArray =>{
     invalidCompanies.push("Discover");
   }
   return invalidCompanies;
-}
+};
 
 //console.log(validateCred(invalid1));
 console.log(findInvalidCards(batch));
 console.log(idInvalidCardCompanies(batch));
 
+//challanges are below
 
+//To make it easier to test credit card numbers, create a function that accepts a string and converts it into an array of numbers like the initially provided arrays. (Check the hint for a helpful function)
 
+let differentCard = "6371513352294946";
 
+const cardNumberSingler = array => {
+  let newArray = [];
+  let newArray2 = [];
+  //newArray = parseInt(array);
+  for(let i in array){
+    newArray.push(array[i])
+    newArray2.push(parseInt(newArray[i]))
+  }
+    
+  return newArray2;
+  };
+  
+//console.log(cardNumberSingler(differentCard));
+//console.log(validateCred(cardNumberSingler(differentCard)));
+//console.log(idInvalidCardCompanies(cardNumberSingler(differentCard)));
 
+//Create a function that will convert invalid numbers into valid numbers.
+const invalidToValid = array =>{
+  if(validateCred(array) === false){
+  let lastIndex = array.length - 1;
+  let copiedCreditCard = array.slice();
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+  let sum = 0;
+  for(i= lastIndex -1 ; i>=0; i -= 2){
+    copiedCreditCard[i] = copiedCreditCard[i] *2;
+    if(copiedCreditCard[i] >9){
+      copiedCreditCard[i] = copiedCreditCard[i] -9;
+    }
+    
+  }
+  console.log(array);
+  //console.log(copiedCreditCard);
+  sum = copiedCreditCard.reduce(reducer);
+  console.log(sum);
+  let distance = sum % 10;
+  console.log("1st distance: " +distance)
+  let distance2 = 10 - distance  
+  console.log("2nd distance: " +distance2)
+  
+  //console.log(copiedCreditCard);
+  if(distance > 5){
+    array[lastIndex] += distance2;
+    if(array[lastIndex] === 10){
+      array[lastIndex] = 0
+    }
+  } else if(array[lastIndex] < distance){
+    array[lastIndex] += distance2;
+  } else if(array[lastIndex] > distance) {
+    array[lastIndex] -= distance;
+    } else {
+    array[lastIndex] += distance2;
+  }
+  //console.log(array)
+  return array;
+
+  }
+  else {
+    console.log("Credit Card Number is already valid")
+    return array;
+  }
+};
+
+console.log(invalidToValid(cardNumberSingler(differentCard)));
